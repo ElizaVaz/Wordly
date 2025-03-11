@@ -1,6 +1,6 @@
-from random import choise
+from random import choice
 
 print("Hi!")
 print("Ваше слово:")
-with open("russian_dict.json") as f:
-    print(choise(list(json.load(f))))
+with open("russian_dict", "r", encoding="utf-8") as f:
+    print(choice(f.readlines()))
