@@ -5,8 +5,15 @@ print("Ваше слово:")
 
 
 
-def word_regen()
+def word_regen1():
+    global word
     with open("russian_dict", "r", encoding="utf-8") as f:
+        word = choice(f.readlines()).strip("\n")
+
+
+def word_regen2():
+    global word
+    with open("english_dict", "r", encoding="utf-8") as f:
         word = choice(f.readlines()).strip("\n")
 
 
@@ -82,8 +89,8 @@ def end():  # Выведеться когда человек проиграет.
 
 
 da = "да"
-def dad():  # Сделано для того чтобы под окончание первой игры человек мог сыграть ещё раз не перезапуская.
-    word_regen()
+def dad1():  # Сделано для того чтобы под окончание первой игры человек мог сыграть ещё раз не перезапуская.
+    word_regen1()
     print("Вам дано 10 жизней. Если вы ввели не букву, то у вас всё равно отниметься жизнь (да, жестоко),")
     print("НО зато вы можете предпологать что это за слово сколько угодно!")
     print("В слове:", len(word), "букв.")
@@ -166,8 +173,85 @@ def dad():  # Сделано для того чтобы под окончани�
 
 
 
+def dad2():  # Сделано для того чтобы под окончание первой игры человек мог сыграть ещё раз не перезапуская.
+    word_regen2()
+    print("You are given 10 lives. If you enter a non-letter, your life will still be taken away (yes, cruel),")
+    print("BUT you can guess what this word is as much as you like!")
+    print("In word:", len(word), "letters.")
+    print("To select one of the options, enter the corresponding number.")
+    x = ["_" for i in range(len(word))]
+    lives = 10
+    print("1. Rules of the game (help()).")
+    print("4. Enter a letter.")
+    print("5. Enter a word.")
+    print("6. Exit (you lose and learn the word).")
+    otvet = input().strip()
+    bil = list()
+    while x != list(word):    # цикл в котором вы либо угодаете слово либо потратите все жизни
+        if otvet == "4":
+            a = (input("Enter the expected letter: ").strip()).lower()
+            if len(a) != 1:
+                print("- Are you sure it's one letter?")
+            chance = 0
+            stuped_n = 1
+            while a in bil:  # Цикл в котором нужно ввести букву которая ещё не была введена.
+                print(f"This letter has already been. I'm giving you {stuped_n} a chance.")
+                stuped_n += 1
+                a = input("Enter the expected letter: ").strip().lower()
+            if a in glasn:  # Проверка (если буква гласная)
+                bil.append(a)
+                glasn.remove(a)
+            elif a in soglasn:  # Проверка (если буква согласная)
+                bil.append(a)
+                soglasn.remove(a)
+            else:
+                print("Is this even a letter?")
+            ii = list()
+            for i in range(len(word)):  # Проверка есть ли в слове эта буква.
+                if word[i] == a:
+                    ii.append(i)
+                    chance = 1
+            for j in range(len(word)):
+                if j in ii:
+                    x[j] = word[j]
+            print(".".join(x))  # Вывод извесных букв.
+            if chance == 0:  # Отнятие жизни...
+                lives -= 1
+                print("There is no such letter....")
+                print("You are left with:", lives)
+            if lives == 0:  # Проверка что человек ещё жив.
+                end()
+                break
+            if x == word:  # А может слово уже угадано?
+                win()
+                print(f"You have spent {10 - lives} lives.")
+        elif otvet == "5":
+            a = input("Enter the expected word: ").strip()
+            if a == word:  # Если человек угадал сразу всё слово, то...
+                print("Right!!!")
+                win()
+                print(f"You have spent {10 - lives} lives.")
+                break
+            else:
+                print("No ._.")
+        elif otvet == "6":
+            print(f"It was the word '{word}'...")  # Если человек сдался.
+            break
+        else:
+            print("What the ... is this?")  # Если нет такого действия.
+            print("There is no such option...")
+        print("1. Game rules (help()).")
+        print("4. Enter a letter.")
+        print("5. Enter a word.")
+        print("6. Exit (you lose and learn the word).")
+        otvet = input().strip()
+
+
 while da == "да":
-    dad()
+    if language == "1":
+        dad1()
+    else:
+        dad2()
     print("Хотите сыграть в ещё раз?") # Выбор сыграть ещё раз.
     print("Если да, то введите 'да'")
     da = (input("Ваш ответ: ").strip()).lower()
