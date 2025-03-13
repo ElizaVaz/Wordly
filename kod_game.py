@@ -1,17 +1,15 @@
 from random import choice
 
 print("Hi!")
-print("Ваше слово:")
 
 
-
-def word_regen1():
+def word_regen1():  # добыватель рандомных русских слов
     global word
     with open("russian_dict", "r", encoding="utf-8") as f:
         word = choice(f.readlines()).strip("\n")
 
 
-def word_regen2():
+def word_regen2():  # добыватель рандомных английских слов
     global word
     with open("english_dict", "r", encoding="utf-8") as f:
         word = choice(f.readlines()).strip("\n")
@@ -20,7 +18,7 @@ def word_regen2():
 glasn = ["а", "у", "о", "и", "э", "ы", "я", "ю", "е", "ё"]
 soglasn = ["б", "в", "г", "д", "ж", "з", "й", "к", "л", "м", "н", "п", "р", "с", "т", "ф", "х"]
 soglasn.extend(["ц", "ч", "ш", "щ", "ъ", "ь"])
-bil = list()
+bil = list()  # буквы которые уже были
 print("Слово из каких letters you want gues? (введите 1, если на русском, 2 - на английском)")
 language = input().strip()
 while language != "1" and language != "2":
